@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mauro Sebastião — IT Systems Administrator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--primary:#1a3a5c;--accent:#2d7dd2;--accent2:#5ba4f5;--accent3:#e8f2ff;--bg:#f5f7fb;--surface:#fff;--text:#1c2340;--muted:#6b7a99;--border:#e2e8f0;--sh:0 4px 24px rgba(26,58,92,.09);--sh2:0 12px 48px rgba(26,58,92,.14);--r:16px;--nh:68px}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nh);background:rgba(245,247,251,.93);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 6%}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--primary);text-decoration:none}
+.nav-links{display:flex;align-items:center;gap:1.8rem;list-style:none}
+.nav-links a{text-decoration:none;color:var(--muted);font-size:.87rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--accent)}
+.nav-right{display:flex;align-items:center;gap:.75rem}
+.lang-sw{display:flex;gap:3px;background:var(--border);border-radius:20px;padding:3px}
+.lang-btn{padding:4px 13px;border-radius:16px;border:none;background:transparent;cursor:pointer;font-size:.77rem;font-weight:700;color:var(--muted);transition:all .2s;font-family:'DM Sans',sans-serif}
+.lang-btn.active{background:var(--surface);color:var(--primary);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.btn-adm{padding:8px 18px;border-radius:20px;background:var(--primary);color:#fff;border:none;cursor:pointer;font-size:.82rem;font-weight:600;font-family:'DM Sans',sans-serif;transition:all .2s}
+.btn-adm:hover{background:var(--accent)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;gap:4rem;padding:calc(var(--nh)+5rem) 6% 5rem;position:relative;overflow:hidden}
+.blob1{position:absolute;top:-150px;right:-80px;width:560px;height:560px;background:radial-gradient(circle,rgba(45,125,210,.12) 0%,transparent 70%);border-radius:50%;pointer-events:none}
+.blob2{position:absolute;bottom:-80px;left:5%;width:380px;height:380px;background:radial-gradient(circle,rgba(91,164,245,.08) 0%,transparent 70%);border-radius:50%;pointer-events:none}
+.hero-c{flex:1;max-width:580px;z-index:1}
+.badge{display:inline-block;padding:6px 16px;background:rgba(45,125,210,.12);color:var(--accent);border-radius:20px;font-size:.79rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:1.4rem}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,5vw,3.9rem);font-weight:700;line-height:1.12;letter-spacing:-.02em;margin-bottom:1rem;color:var(--primary)}
+.hero h1 span{color:var(--accent)}
+.hero-sub{font-size:1rem;color:var(--muted);margin-bottom:2rem;max-width:440px;font-weight:400}
+.hero-acts{display:flex;gap:1rem;flex-wrap:wrap}
+.btn-p{padding:14px 30px;border-radius:30px;background:var(--accent);color:#fff;border:none;cursor:pointer;font-size:.92rem;font-weight:600;font-family:'DM Sans',sans-serif;transition:all .25s;text-decoration:none;display:inline-block}
+.btn-p:hover{background:var(--primary);transform:translateY(-2px);box-shadow:0 8px 24px rgba(45,125,210,.3)}
+.btn-o{padding:14px 30px;border-radius:30px;border:2px solid var(--accent);color:var(--accent);background:transparent;cursor:pointer;font-size:.92rem;font-weight:600;font-family:'DM Sans',sans-serif;transition:all .25s;text-decoration:none;display:inline-block}
+.btn-o:hover{background:var(--accent3)}
+.stats{display:flex;gap:2.5rem;margin-top:2.5rem}
+.stat-n{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:700;color:var(--primary)}
+.stat-l{font-size:.77rem;color:var(--muted);font-weight:500}
+.photo-wrap{flex:0 0 auto;z-index:1}
+.photo-ring{width:300px;height:300px;border-radius:50%;border:4px solid var(--accent2);padding:6px;background:var(--surface);box-shadow:var(--sh2);position:relative}
+.photo-ring::before{content:'';position:absolute;inset:-12px;border-radius:50%;border:2px dashed rgba(45,125,210,.25);animation:spin 20s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.photo-inner{width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,var(--accent3),var(--border));display:flex;align-items:center;justify-content:center;font-size:4rem;color:var(--accent);overflow:hidden;font-family:'Playfair Display',serif;font-weight:700}
+.photo-inner img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:none}
+
+/* SECTIONS */
+section{padding:6rem 6%}
+.sec-hdr{text-align:center;margin-bottom:3.5rem}
+.sec-tag{display:inline-block;padding:5px 14px;background:var(--accent3);color:var(--accent);border-radius:20px;font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.8rem}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;color:var(--primary)}
+
+/* ABOUT */
+#about{background:var(--surface)}
+.about-g{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;max-width:1100px;margin:0 auto}
+.about-p{color:var(--muted);margin-bottom:1rem;line-height:1.8;font-size:.95rem}
+.info-g{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:1.5rem}
+.info-it{padding:.9rem 1rem;background:var(--bg);border-radius:10px;border:1px solid var(--border)}
+.info-l{font-size:.7rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.06em}
+.info-v{font-size:.88rem;color:var(--text);font-weight:500;margin-top:.15rem}
+.cert-card{background:var(--bg);border-radius:12px;padding:1.2rem 1.4rem;border:1px solid var(--border);margin-bottom:.8rem;transition:all .3s}
+.cert-card:hover{border-color:var(--accent2);box-shadow:var(--sh)}
+.cert-title{font-weight:600;color:var(--primary);font-size:.92rem}
+.cert-sub{font-size:.82rem;color:var(--muted);margin-top:.2rem}
+
+/* SKILLS */
+#skills{background:var(--bg)}
+.skills-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.2rem;max-width:1100px;margin:0 auto}
+.sk-card{background:var(--surface);border-radius:var(--r);padding:1.4rem;border:1px solid var(--border);box-shadow:var(--sh);transition:all .3s}
+.sk-card:hover{transform:translateY(-4px);box-shadow:var(--sh2);border-color:var(--accent2)}
+.sk-icon{font-size:1.6rem;margin-bottom:.6rem}
+.sk-name{font-weight:600;color:var(--primary);margin-bottom:.5rem;font-size:.91rem}
+.sk-bar{height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.sk-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width 1s ease}
+.sk-pct{font-size:.73rem;color:var(--muted);margin-top:.35rem}
+
+/* TIMELINE */
+#experience{background:var(--surface)}
+.tl{position:relative;max-width:820px;margin:0 auto;padding-left:2.2rem}
+.tl::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(var(--accent),var(--accent2));border-radius:2px}
+.tl-item{position:relative;padding-left:2.2rem;margin-bottom:2.5rem}
+.tl-dot{position:absolute;left:-2.5rem;top:.35rem;width:15px;height:15px;border-radius:50%;background:var(--accent);border:3px solid var(--surface);box-shadow:0 0 0 2px var(--accent)}
+.tl-date{font-size:.76rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem}
+.tl-title{font-size:1.03rem;font-weight:700;color:var(--primary);margin-bottom:.2rem}
+.tl-co{font-size:.86rem;font-weight:500;color:var(--accent);margin-bottom:.55rem}
+.tl-desc{font-size:.86rem;color:var(--muted);line-height:1.75}
+.tl-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.7rem}
+.tl-tag{padding:3px 10px;background:var(--accent3);color:var(--accent);border-radius:12px;font-size:.72rem;font-weight:600}
+
+/* GALLERY */
+#gallery{background:var(--bg)}
+.gal-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1rem;max-width:1100px;margin:0 auto}
+.gal-it{border-radius:var(--r);overflow:hidden;aspect-ratio:4/3;background:var(--border);position:relative;cursor:pointer;transition:transform .3s}
+.gal-it:hover{transform:scale(1.02)}
+.gal-it img,.gal-it video{width:100%;height:100%;object-fit:cover}
+.gal-empty{grid-column:1/-1;text-align:center;padding:4rem;color:var(--muted);font-size:.93rem}
+.gal-empty-icon{font-size:3rem;margin-bottom:1rem;opacity:.35}
+
+/* CV SECTION */
+#cv-gen{background:var(--surface)}
+.cv-form{max-width:580px;margin:0 auto}
+.f-g{margin-bottom:1.1rem}
+.f-l{font-size:.8rem;font-weight:700;color:var(--primary);margin-bottom:.35rem;display:block;text-transform:uppercase;letter-spacing:.05em}
+.f-i{width:100%;padding:11px 15px;border:2px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.91rem;color:var(--text);background:var(--bg);transition:border-color .2s;outline:none}
+.f-i:focus{border-color:var(--accent)}
+.cv-btns{display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.4rem}
+
+/* CONTACT */
+#contact{background:var(--bg)}
+.ct-g{display:grid;grid-template-columns:1fr 1fr;gap:3rem;max-width:1000px;margin:0 auto;align-items:start}
+.ct-info{display:flex;flex-direction:column;gap:.8rem}
+.ct-it{display:flex;align-items:center;gap:1rem;padding:1.1rem;background:var(--surface);border-radius:12px;border:1px solid var(--border)}
+.ct-ico{font-size:1.4rem}
+.ct-dl{font-size:.7rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.06em}
+.ct-dv{font-size:.88rem;color:var(--text);font-weight:500}
+.ct-form{display:flex;flex-direction:column;gap:.8rem}
+.submit-btn{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:13px;font-size:.92rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.submit-btn:hover{background:var(--primary)}
+
+/* FOOTER */
+footer{background:var(--primary);color:rgba(255,255,255,.65);padding:2.5rem 6%;text-align:center;font-size:.85rem}
+footer a{color:var(--accent2);text-decoration:none}
+footer strong{color:#fff}
+
+/* MODALS */
+.overlay{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:1rem}
+.overlay.open{display:flex}
+.modal{background:var(--surface);border-radius:var(--r);padding:2.5rem;max-width:520px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--sh2)}
+.modal h2{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--primary);margin-bottom:1.4rem}
+.modal-x{float:right;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--muted);line-height:1}
+
+/* ADMIN */
+.adm-overlay{display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);overflow-y:auto;padding:2rem 1rem}
+.adm-overlay.open{display:block}
+.adm-box{background:var(--surface);border-radius:var(--r);padding:2.5rem;max-width:880px;margin:0 auto;box-shadow:var(--sh2)}
+.adm-box h2{font-family:'Playfair Display',serif;font-size:1.55rem;color:var(--primary);margin-bottom:.3rem}
+.adm-sub{font-size:.87rem;color:var(--muted);margin-bottom:1.8rem}
+.adm-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem}
+.atab{padding:8px 18px;border-radius:20px;border:2px solid var(--border);background:transparent;cursor:pointer;font-size:.81rem;font-weight:600;color:var(--muted);font-family:'DM Sans',sans-serif;transition:all .2s}
+.atab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.atab-c{display:none}
+.atab-c.active{display:block}
+.f-g2{margin-bottom:1rem}
+.fl2{font-size:.76rem;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.3rem;display:block}
+.fi2,.ft2,.fs2{width:100%;padding:10px 13px;border:2px solid var(--border);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:.89rem;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s}
+.fi2:focus,.ft2:focus{border-color:var(--accent)}
+.ft2{resize:vertical;min-height:80px}
+.up-area{border:2px dashed var(--border);border-radius:12px;padding:2rem;text-align:center;cursor:pointer;transition:all .2s;margin-top:.6rem}
+.up-area:hover{border-color:var(--accent);background:var(--accent3)}
+.up-area p{font-size:.87rem;color:var(--muted);margin-top:.4rem}
+.color-row{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:.5rem}
+.sw{width:42px;height:42px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all .2s}
+.sw.sel{border-color:var(--text);transform:scale(1.15)}
+.adm-btns{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.5rem}
+.save-btn{background:var(--accent);color:#fff;border:none;padding:12px 26px;border-radius:10px;font-size:.91rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
+.save-btn:hover{background:var(--primary)}
+.cls-btn{background:var(--border);color:var(--text);border:none;padding:12px 20px;border-radius:10px;font-size:.91rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+
+/* LIGHTBOX */
+.lb{display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.92);align-items:center;justify-content:center}
+.lb.open{display:flex}
+.lb-x{position:absolute;top:1.2rem;right:1.8rem;font-size:2rem;color:#fff;cursor:pointer;background:none;border:none}
+
+/* TOAST */
+.toast{position:fixed;bottom:2rem;right:2rem;z-index:999;background:var(--primary);color:#fff;padding:13px 22px;border-radius:12px;font-size:.89rem;font-weight:500;box-shadow:var(--sh2);transform:translateY(80px);opacity:0;transition:all .4s;max-width:320px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.ok{background:#1a5c3a}
+.toast.err{background:#8b1a1a}
+
+@media(max-width:900px){
+  .hero{flex-direction:column;text-align:center;gap:3rem}
+  .hero-acts{justify-content:center}
+  .stats{justify-content:center}
+  .about-g{grid-template-columns:1fr}
+  .ct-g{grid-template-columns:1fr}
+  .nav-links{display:none}
+}
+@media(max-width:600px){section{padding:4rem 5%}nav{padding:0 4%}}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- LIGHTBOX -->
+<div class="lb" id="lb"><button class="lb-x" onclick="closeLB()">✕</button><div id="lb-c"></div></div>
+
+<!-- LOGIN MODAL -->
+<div class="overlay" id="loginModal">
+  <div class="modal">
+    <button class="modal-x" onclick="closeLogin()">✕</button>
+    <h2 id="lm-title">Acesso Administrativo</h2>
+    <div class="f-g2">
+      <label class="fl2">Email</label>
+      <input class="fi2" type="email" id="le" placeholder="admin@mauro.pt">
+    </div>
+    <div class="f-g2">
+      <label class="fl2" id="lm-pass">Palavra-passe</label>
+      <input class="fi2" type="password" id="lp" placeholder="••••••••">
+    </div>
+    <button class="btn-p" onclick="doLogin()" style="width:100%;margin-top:.5rem" id="lm-btn">Entrar</button>
+    <p style="font-size:.76rem;color:var(--muted);margin-top:1rem;text-align:center">Default: admin@mauro.pt / mauro2024</p>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="adm-overlay" id="adminPanel">
+ <div class="adm-box">
+  <h2>⚙️ Painel de Administração</h2>
+  <p class="adm-sub">Gerencie todo o conteúdo do seu portfólio</p>
+  <div class="adm-tabs">
+    <button class="atab active" onclick="switchTab('profile',this)">👤 Perfil</button>
+    <button class="atab" onclick="switchTab('photo',this)">📷 Foto</button>
+    <button class="atab" onclick="switchTab('skills',this)">🛠 Skills</button>
+    <button class="atab" onclick="switchTab('exp',this)">💼 Experiência</button>
+    <button class="atab" onclick="switchTab('gal',this)">🖼 Galeria</button>
+    <button class="atab" onclick="switchTab('colors',this)">🎨 Cores</button>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="atab-c active" id="tab-profile">
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:.9rem">
+    <div class="f-g2"><label class="fl2">Nome Completo</label><input class="fi2" id="a_name" value="Mauro Roberto F. Sebastião"></div>
+    <div class="f-g2"><label class="fl2">Título</label><input class="fi2" id="a_title" value="Administrador de Sistemas de TI"></div>
+    <div class="f-g2"><label class="fl2">Email</label><input class="fi2" id="a_email" value="m.r.f.sebastiao@gmail.com"></div>
+    <div class="f-g2"><label class="fl2">Telefone</label><input class="fi2" id="a_phone" value="+351 910 125 094"></div>
+    <div class="f-g2"><label class="fl2">Localização</label><input class="fi2" id="a_location" value="Lisboa, Portugal"></div>
+    <div class="f-g2"><label class="fl2">LinkedIn</label><input class="fi2" id="a_linkedin" value="https://www.linkedin.com/in/mauro-sebastiao-74a62b1a/"></div>
+    <div class="f-g2"><label class="fl2">Anos Experiência</label><input class="fi2" id="a_years" value="15+"></div>
+    <div class="f-g2"><label class="fl2">Nº Projetos</label><input class="fi2" id="a_projects" value="15+"></div>
+   </div>
+   <div class="f-g2" style="margin-top:.5rem"><label class="fl2">Resumo Profissional</label>
+    <textarea class="ft2" id="a_summary" style="min-height:110px">Administrador de Sistemas de TI com 15+ anos de experiência em infraestrutura crítica, gestão de projetos e virtualização (VMware/Hyper-V), Microsoft 365/Azure e implementação de políticas de segurança (CCTV, Biometria, Kaspersky). Certificado em CCNA, CompTIA A+ e Microsoft 365 Administrator.</textarea>
+   </div>
+  </div>
+
+  <!-- PHOTO -->
+  <div class="atab-c" id="tab-photo">
+   <p style="font-size:.9rem;color:var(--muted);margin-bottom:1.2rem">Upload da sua foto de perfil (JPG/PNG, máx 5MB)</p>
+   <div class="up-area" onclick="document.getElementById('ppInput').click()">
+    <div style="font-size:2.5rem">📸</div>
+    <p>Clique para escolher foto de perfil</p>
+    <p style="font-size:.76rem;margin-top:.2rem">JPG, PNG — máx 5MB</p>
+   </div>
+   <input type="file" id="ppInput" accept="image/*" style="display:none" onchange="handleProfilePhoto(this)">
+   <div id="pp-preview" style="margin-top:1rem;text-align:center"></div>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="atab-c" id="tab-skills">
+   <p style="font-size:.87rem;color:var(--muted);margin-bottom:.8rem">Edite nome e nível (0-100) de cada competência</p>
+   <div id="sk-admin"></div>
+   <button onclick="addSkill()" style="background:var(--accent3);color:var(--accent);border:none;padding:9px 18px;border-radius:8px;cursor:pointer;font-weight:600;font-size:.83rem;margin-top:.3rem">+ Adicionar</button>
+  </div>
+
+  <!-- EXPERIENCE -->
+  <div class="atab-c" id="tab-exp">
+   <p style="font-size:.87rem;color:var(--muted);margin-bottom:.8rem">Edite o percurso profissional</p>
+   <div id="exp-admin"></div>
+   <button onclick="addExp()" style="background:var(--accent3);color:var(--accent);border:none;padding:9px 18px;border-radius:8px;cursor:pointer;font-weight:600;font-size:.83rem;margin-top:.3rem">+ Adicionar Experiência</button>
+  </div>
+
+  <!-- GALLERY -->
+  <div class="atab-c" id="tab-gal">
+   <p style="font-size:.9rem;color:var(--muted);margin-bottom:1.2rem">Adicione fotos e vídeos dos seus projetos</p>
+   <div class="up-area" onclick="document.getElementById('galInput').click()">
+    <div style="font-size:2.5rem">🖼️</div>
+    <p>Clique para adicionar fotos / vídeos</p>
+    <p style="font-size:.76rem;margin-top:.2rem">JPG, PNG, MP4 • Múltiplos ficheiros</p>
+   </div>
+   <input type="file" id="galInput" accept="image/*,video/*" multiple style="display:none" onchange="handleGallery(this)">
+   <div id="gal-adm-prev" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:.6rem;margin-top:.8rem"></div>
+  </div>
+
+  <!-- COLORS -->
+  <div class="atab-c" id="tab-colors">
+   <p style="font-size:.9rem;color:var(--muted);margin-bottom:1.2rem">Escolha o esquema de cores</p>
+   <label class="fl2">Temas Predefinidos</label>
+   <div class="color-row">
+    <div class="sw sel" style="background:#2d7dd2" data-p="#1a3a5c" data-a="#2d7dd2" data-a2="#5ba4f5" data-a3="#e8f2ff" onclick="applyTheme(this)" title="Azul"></div>
+    <div class="sw" style="background:#0f766e" data-p="#0d3d38" data-a="#0f766e" data-a2="#14b8a6" data-a3="#e6f7f5" onclick="applyTheme(this)" title="Verde"></div>
+    <div class="sw" style="background:#7c3aed" data-p="#2e1065" data-a="#7c3aed" data-a2="#a78bfa" data-a3="#f0ebff" onclick="applyTheme(this)" title="Púrpura"></div>
+    <div class="sw" style="background:#b45309" data-p="#451a03" data-a="#b45309" data-a2="#f59e0b" data-a3="#fff7e6" onclick="applyTheme(this)" title="Âmbar"></div>
+    <div class="sw" style="background:#0e7490" data-p="#083344" data-a="#0e7490" data-a2="#22d3ee" data-a3="#e0f7fb" onclick="applyTheme(this)" title="Ciano"></div>
+    <div class="sw" style="background:#be185d" data-p="#500724" data-a="#be185d" data-a2="#f472b6" data-a3="#fde8f2" onclick="applyTheme(this)" title="Rosa"></div>
+    <div class="sw" style="background:#1e293b" data-p="#0f172a" data-a="#334155" data-a2="#64748b" data-a3="#f1f5f9" onclick="applyTheme(this)" title="Slate"></div>
+   </div>
+   <div style="margin-top:1.4rem">
+    <label class="fl2">Cor Personalizada</label>
+    <div style="display:flex;gap:.7rem;align-items:center;margin-top:.4rem">
+     <input type="color" id="cpicker" value="#2d7dd2" style="width:46px;height:46px;border:none;border-radius:8px;cursor:pointer">
+     <input class="fi2" id="chex" placeholder="#2d7dd2" style="width:150px">
+     <button onclick="applyCustomColor()" style="background:var(--accent);color:#fff;border:none;padding:10px 16px;border-radius:8px;cursor:pointer;font-weight:600">Aplicar</button>
+    </div>
+   </div>
+  </div>
+
+  <div class="adm-btns">
+   <button class="save-btn" onclick="saveAll()">💾 Guardar Alterações</button>
+   <button class="cls-btn" onclick="closeAdmin()">Fechar</button>
+  </div>
+ </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#home">MS</a>
+  <ul class="nav-links">
+    <li><a href="#about" data-pt="Sobre" data-en="About">Sobre</a></li>
+    <li><a href="#skills" data-pt="Competências" data-en="Skills">Competências</a></li>
+    <li><a href="#experience" data-pt="Percurso" data-en="Experience">Percurso</a></li>
+    <li><a href="#gallery" data-pt="Galeria" data-en="Gallery">Galeria</a></li>
+    <li><a href="#cv-gen" data-pt="CV / Carta" data-en="CV / Letter">CV / Carta</a></li>
+    <li><a href="#contact" data-pt="Contacto" data-en="Contact">Contacto</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="lang-sw">
+      <button class="lang-btn active" onclick="setLang('pt')">PT</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+    <button class="btn-adm" onclick="openLogin()" id="admBtn">🔐 Admin</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="home" class="hero">
+  <div class="blob1"></div><div class="blob2"></div>
+  <div class="hero-c">
+    <div class="badge" data-pt="Disponível para novas oportunidades" data-en="Available for new opportunities">Disponível para novas oportunidades</div>
+    <h1 id="hn">Mauro<br><span>Sebastião</span></h1>
+    <p class="hero-sub" id="hs">Administrador de Sistemas de TI · Cyber Security · CCTV · Microsoft 365</p>
+    <div class="hero-acts">
+      <a href="#contact" class="btn-p" data-pt="Entrar em Contacto" data-en="Get in Touch">Entrar em Contacto</a>
+      <a href="#cv-gen" class="btn-o" data-pt="Gerar CV" data-en="Generate CV">Gerar CV</a>
+    </div>
+    <div class="stats">
+      <div><div class="stat-n" id="sy">15+</div><div class="stat-l" data-pt="Anos Exp." data-en="Years Exp.">Anos Exp.</div></div>
+      <div><div class="stat-n" id="sp">15+</div><div class="stat-l" data-pt="Projetos" data-en="Projects">Projetos</div></div>
+      <div><div class="stat-n">2</div><div class="stat-l" data-pt="Idiomas" data-en="Languages">Idiomas</div></div>
+    </div>
+  </div>
+  <div class="photo-wrap">
+    <div class="photo-ring">
+      <div class="photo-inner" id="photo-inner">
+        <span id="photo-initials">MS</span>
+        <img id="photo-img" src="" alt="Mauro Sebastião">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sec-hdr">
+    <div class="sec-tag" data-pt="Quem Sou" data-en="Who I Am">Quem Sou</div>
+    <h2 class="sec-title" data-pt="Sobre Mim" data-en="About Me">Sobre Mim</h2>
+  </div>
+  <div class="about-g">
+    <div>
+      <p class="about-p" id="ab-sum">Administrador de Sistemas de TI com 15+ anos de experiência em infraestrutura crítica, gestão de projetos e virtualização (VMware/Hyper-V), Microsoft 365/Azure e implementação de políticas de segurança (CCTV, Biometria, Kaspersky). Certificado em CCNA, CompTIA A+ e Microsoft 365 Administrator.</p>
+      <p class="about-p" data-pt="Especialista em projetar soluções integradas de segurança eletrónica e TI. Perfil proativo, confiável e orientado à excelência operacional, com forte capacidade de gestão de projetos e formação de equipas." data-en="Specialist in designing integrated electronic security and IT solutions. Proactive, reliable profile oriented toward operational excellence, with strong project management and team training capabilities.">Especialista em projetar soluções integradas de segurança eletrónica e TI. Perfil proativo, confiável e orientado à excelência operacional, com forte capacidade de gestão de projetos e formação de equipas.</p>
+      <div class="info-g">
+        <div class="info-it"><div class="info-l" data-pt="Localização" data-en="Location">Localização</div><div class="info-v" id="ab-loc">Lisboa, Portugal</div></div>
+        <div class="info-it"><div class="info-l">Email</div><div class="info-v" id="ab-email">m.r.f.sebastiao@gmail.com</div></div>
+        <div class="info-it"><div class="info-l" data-pt="Telefone" data-en="Phone">Telefone</div><div class="info-v" id="ab-phone">+351 910 125 094</div></div>
+        <div class="info-it"><div class="info-l" data-pt="Idiomas" data-en="Languages">Idiomas</div><div class="info-v" data-pt="Português (Nativo) · Inglês (B2)" data-en="Portuguese (Native) · English (B2)">Português (Nativo) · Inglês (B2)</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="cert-card"><div class="cert-title">🏆 CompTIA A+ Certified</div><div class="cert-sub" data-pt="Hardware & Software Fundamentals" data-en="Hardware & Software Fundamentals">Hardware & Software Fundamentals</div></div>
+      <div class="cert-card"><div class="cert-title">🌐 Cisco CCNA</div><div class="cert-sub" data-pt="Networking & Routing Protocols" data-en="Networking & Routing Protocols">Networking & Routing Protocols</div></div>
+      <div class="cert-card"><div class="cert-title">☁️ Microsoft 365 Administrator</div><div class="cert-sub">Global Admin · Azure AD · SharePoint</div></div>
+      <div class="cert-card"><div class="cert-title">🔒 Kaspersky Security Admin</div><div class="cert-sub" data-pt="Endpoint & Server Security" data-en="Endpoint & Server Security">Endpoint & Server Security</div></div>
+      <div class="cert-card"><div class="cert-title">📹 CCTV & Segurança Eletrónica</div><div class="cert-sub" data-pt="15+ Projetos implementados" data-en="15+ Projects implemented">15+ Projetos implementados</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="sec-hdr">
+    <div class="sec-tag" data-pt="O que faço" data-en="What I Do">O que faço</div>
+    <h2 class="sec-title" data-pt="Competências Técnicas" data-en="Technical Skills">Competências Técnicas</h2>
+  </div>
+  <div class="skills-g" id="sk-grid"></div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="sec-hdr">
+    <div class="sec-tag" data-pt="Percurso" data-en="Career Path">Percurso</div>
+    <h2 class="sec-title" data-pt="Experiência Profissional" data-en="Professional Experience">Experiência Profissional</h2>
+  </div>
+  <div class="tl" id="tl"></div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="sec-hdr">
+    <div class="sec-tag" data-pt="Trabalhos" data-en="Projects">Trabalhos</div>
+    <h2 class="sec-title" data-pt="Galeria de Projetos" data-en="Project Gallery">Galeria de Projetos</h2>
+  </div>
+  <div class="gal-g" id="gal"></div>
+</section>
+
+<!-- CV GEN -->
+<section id="cv-gen">
+  <div class="sec-hdr">
+    <div class="sec-tag" data-pt="Documentos" data-en="Documents">Documentos</div>
+    <h2 class="sec-title" data-pt="Gerar CV & Carta de Apresentação" data-en="Generate CV & Cover Letter">Gerar CV & Carta de Apresentação</h2>
+  </div>
+  <div class="cv-form">
+    <div class="f-g"><label class="f-l" data-pt="Nome da Empresa" data-en="Company Name">Nome da Empresa</label><input class="f-i" id="cv-co" placeholder="Ex: Microsoft Portugal" data-placeholder-pt="Ex: Microsoft Portugal" data-placeholder-en="e.g. Microsoft Portugal"></div>
+    <div class="f-g"><label class="f-l" data-pt="Referência da Vaga" data-en="Job Reference">Referência da Vaga</label><input class="f-i" id="cv-ref" placeholder="Ex: IT-SYS-2024-001" data-placeholder-pt="Ex: IT-SYS-2024-001" data-placeholder-en="e.g. IT-SYS-2024-001"></div>
+    <div class="f-g"><label class="f-l" data-pt="Idioma" data-en="Language">Idioma</label><select class="f-i" id="cv-lang"><option value="pt">Português</option><option value="en">English</option></select></div>
+    <div class="cv-btns">
+      <button class="btn-p" onclick="genCV()">📄 <span data-pt="Gerar CV Europeu" data-en="Generate European CV">Gerar CV Europeu</span></button>
+      <button class="btn-o" onclick="genCover()">✉️ <span data-pt="Gerar Carta" data-en="Cover Letter">Gerar Carta</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="sec-hdr">
+    <div class="sec-tag" data-pt="Contacto" data-en="Contact">Contacto</div>
+    <h2 class="sec-title" data-pt="Entre em Contacto" data-en="Get in Touch">Entre em Contacto</h2>
+  </div>
+  <div class="ct-g">
+    <div class="ct-info">
+      <div class="ct-it"><div class="ct-ico">📧</div><div><div class="ct-dl">Email</div><div class="ct-dv" id="c-email">m.r.f.sebastiao@gmail.com</div></div></div>
+      <div class="ct-it"><div class="ct-ico">📱</div><div><div class="ct-dl" data-pt="Telefone" data-en="Phone">Telefone</div><div class="ct-dv" id="c-phone">+351 910 125 094</div></div></div>
+      <div class="ct-it"><div class="ct-ico">📍</div><div><div class="ct-dl" data-pt="Localização" data-en="Location">Localização</div><div class="ct-dv" id="c-loc">Lisboa, Portugal</div></div></div>
+      <div class="ct-it"><div class="ct-ico">💼</div><div><div class="ct-dl">LinkedIn</div><div class="ct-dv"><a href="https://www.linkedin.com/in/mauro-sebastiao-74a62b1a/" target="_blank" id="c-li" style="color:var(--accent)">linkedin.com/in/mauro-sebastiao</a></div></div></div>
+    </div>
+    <div class="ct-form">
+      <input class="f-i" id="mn" placeholder="O seu nome" data-placeholder-pt="O seu nome" data-placeholder-en="Your name">
+      <input class="f-i" id="me" type="email" placeholder="O seu email" data-placeholder-pt="O seu email" data-placeholder-en="Your email">
+      <textarea class="f-i" id="mm" style="min-height:120px;resize:vertical" placeholder="A sua mensagem..." data-placeholder-pt="A sua mensagem..." data-placeholder-en="Your message..."></textarea>
+      <button class="submit-btn" onclick="sendMsg()" data-pt="Enviar Mensagem" data-en="Send Message">Enviar Mensagem</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2024 <strong id="fn">Mauro Roberto F. Sebastião</strong> · <span data-pt="Todos os direitos reservados" data-en="All rights reserved">Todos os direitos reservados</span></p>
+  <p style="margin-top:.4rem"><a href="mailto:m.r.f.sebastiao@gmail.com" id="fe">m.r.f.sebastiao@gmail.com</a></p>
+</footer>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────
+const DEF = {
+  name:'Mauro Roberto F. Sebastião',
+  title:'Administrador de Sistemas de TI',
+  email:'m.r.f.sebastiao@gmail.com',
+  phone:'+351 910 125 094',
+  location:'Lisboa, Portugal',
+  linkedin:'https://www.linkedin.com/in/mauro-sebastiao-74a62b1a/',
+  years:'15+', projects:'15+',
+  summary:'Administrador de Sistemas de TI com 15+ anos de experiência em infraestrutura crítica, gestão de projetos e virtualização (VMware/Hyper-V), Microsoft 365/Azure e implementação de políticas de segurança (CCTV, Biometria, Kaspersky). Certificado em CCNA, CompTIA A+ e Microsoft 365 Administrator.',
+  photo:null,
+  theme:{p:'#1a3a5c',a:'#2d7dd2',a2:'#5ba4f5',a3:'#e8f2ff'},
+  skills:[
+    {n:'Windows Server / AD / DNS / GPO',v:95},
+    {n:'VMware ESXi / Hyper-V',v:90},
+    {n:'Microsoft 365 / Azure AD',v:92},
+    {n:'Cisco CCNA / Redes',v:88},
+    {n:'CCTV / Segurança Eletrónica',v:95},
+    {n:'Kaspersky Admin Center',v:90},
+    {n:'PowerShell / Python',v:80},
+    {n:'Backup & DR (Veeam)',v:88},
+    {n:'Controlo Acesso / Biometria',v:90},
+    {n:'SharePoint / WSUS',v:82},
+    {n:'Cyber Security',v:78},
+    {n:'Zabbix / Monitorização',v:85},
+  ],
+  experience:[
+    {date:'Fev 2022 – Atualmente',title:'Administrador de Sistemas de TI',co:'Academia BAI — Morro Bento, Luanda, Angola',desc:'Gestão de infraestrutura Windows Server (AD, DNS, GPO) e virtualização VMware/Hyper-V com 99.9% de disponibilidade. Implementação de políticas de cibersegurança (firewall, Kaspersky, CFTV) reduzindo incidentes em 40%. Automação com PowerShell/Python poupando 70% de tarefas manuais. Backup Veeam com RTO < 2h. Administrador Global Microsoft 365. Monitorização Zabbix e procurement otimizando custos em 30%.',tags:['Windows Server','VMware','M365','Kaspersky','PowerShell','Veeam']},
+    {date:'Mar 2020 – Fev 2022',title:'Técnico de TI e Segurança Eletrónica',co:'Vida Digital Lda — Luanda, Angola',desc:'Instalação de sistemas CCTV (analógico, IP e híbrido), controlo de acesso biométrico, passagem de cabos e configuração de DVRs/NVRs. Manutenção de cercas elétricas, portões automáticos e assistência informática geral.',tags:['CCTV','DVR/NVR','Controlo Acesso','Cerca Elétrica','Cablagem']},
+    {date:'Nov 2012 – Mar 2020',title:'Administrador de Sistemas de TI e Segurança Eletrónica',co:'Faculdade de Economia UAN & Pinto Bastos — Luanda, Angola',desc:'Projeção e construção do Mini-Data Center, reduzindo custos operacionais em 30% e suportando 500+ utilizadores. Gestão do orçamento de TI (OGE). Implementação completa de CCTV: câmeras analógicas/IP, DVRs/NVRs, controlo de acesso biométrico e planos de recuperação de desastres (DRP).',tags:['Mini-DataCenter','CCTV','500+ users','DRP','Procurement']},
+    {date:'Mar 2008 – Nov 2012',title:'Técnico de TI / Gerente de Documentação',co:'ZICAI Grupo Infornet & Haut de Gamme — Luanda, Angola',desc:'Instalação e configuração de sistemas de segurança CCTV (analógico, IP e híbrido), controlo de acesso biométrico, DVRs/NVRs e vigilância remota. Padronização de processos técnicos aumentando eficiência operacional em 25%.',tags:['CCTV','Segurança','Controlo Acesso','Documentação']},
+  ],
+  gallery:[],
+  lang:'pt',
+  adminEmail:'admin@mauro.pt',
+  adminPass:'mauro2024'
+};
+
+let D = (() => {
+  try { return JSON.parse(localStorage.getItem('mspf_v2') || 'null') || JSON.parse(JSON.stringify(DEF)); }
+  catch(e) { return JSON.parse(JSON.stringify(DEF)); }
+})();
+
+let loggedIn = false;
+let lang = D.lang || 'pt';
+
+function persist() {
+  D.lang = lang;
+  try { localStorage.setItem('mspf_v2', JSON.stringify(D)); } catch(e) {}
+}
+
+// ── RENDER ────────────────────────────────────────────────────
+function render() {
+  const parts = D.name.split(' ');
+  const first = parts[0];
+  const rest = parts.slice(1).join(' ');
+  document.getElementById('hn').innerHTML = `${first}<br><span>${rest}</span>`;
+  document.getElementById('hs').textContent = D.title + ' · Cyber Security · CCTV · Microsoft 365';
+  document.getElementById('sy').textContent = D.years;
+  document.getElementById('sp').textContent = D.projects;
+  document.getElementById('ab-sum').textContent = D.summary;
+  document.getElementById('ab-loc').textContent = D.location;
+  document.getElementById('ab-email').textContent = D.email;
+  document.getElementById('ab-phone').textContent = D.phone;
+  document.getElementById('c-email').textContent = D.email;
+  document.getElementById('c-phone').textContent = D.phone;
+  document.getElementById('c-loc').textContent = D.location;
+  document.getElementById('c-li').href = D.linkedin;
+  document.getElementById('fn').textContent = D.name;
+  document.getElementById('fe').textContent = D.email;
+  document.getElementById('fe').href = 'mailto:' + D.email;
+
+  if (D.photo) {
+    const img = document.getElementById('photo-img');
+    img.src = D.photo;
+    img.style.display = 'block';
+    document.getElementById('photo-initials').style.display = 'none';
+  }
+  applyThemeVars(D.theme);
+  renderSkills();
+  renderTimeline();
+  renderGallery();
+}
+
+function applyThemeVars(t) {
+  const r = document.documentElement;
+  r.style.setProperty('--primary', t.p);
+  r.style.setProperty('--accent', t.a);
+  r.style.setProperty('--accent2', t.a2);
+  r.style.setProperty('--accent3', t.a3);
+}
+
+function skIcon(n) {
+  n = n.toLowerCase();
+  if(n.includes('windows')||n.includes('server')||n.includes('ad ')||n.includes('dns')) return '🖥️';
+  if(n.includes('vmware')||n.includes('hyper')) return '☁️';
+  if(n.includes('365')||n.includes('azure')||n.includes('sharepoint')) return '🔷';
+  if(n.includes('cisco')||n.includes('rede')||n.includes('ccna')) return '🌐';
+  if(n.includes('cctv')||n.includes('câmer')||n.includes('camera')) return '📹';
+  if(n.includes('kaspersky')||n.includes('cyber')||n.includes('segur')) return '🔒';
+  if(n.includes('power')||n.includes('python')||n.includes('script')) return '⚡';
+  if(n.includes('backup')||n.includes('veeam')||n.includes('dr')) return '💾';
+  if(n.includes('biometr')||n.includes('acesso')||n.includes('controlo')) return '🔑';
+  if(n.includes('zabbix')||n.includes('monitor')) return '📊';
+  if(n.includes('cerca')||n.includes('portão')||n.includes('cablag')) return '🔧';
+  return '🛠️';
+}
+
+function renderSkills() {
+  document.getElementById('sk-grid').innerHTML = D.skills.map(s => `
+    <div class="sk-card">
+      <div class="sk-icon">${skIcon(s.n)}</div>
+      <div class="sk-name">${s.n}</div>
+      <div class="sk-bar"><div class="sk-fill" style="width:0%" data-w="${s.v}%"></div></div>
+      <div class="sk-pct">${s.v}%</div>
+    </div>`).join('');
+}
+
+function renderTimeline() {
+  document.getElementById('tl').innerHTML = D.experience.map(e => `
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">${e.date}</div>
+      <div class="tl-title">${e.title}</div>
+      <div class="tl-co">${e.co}</div>
+      <div class="tl-desc">${e.desc}</div>
+      <div class="tl-tags">${e.tags.map(t=>`<span class="tl-tag">${t}</span>`).join('')}</div>
+    </div>`).join('');
+}
+
+function renderGallery() {
+  const g = document.getElementById('gal');
+  if (!D.gallery || !D.gallery.length) {
+    g.innerHTML = `<div class="gal-empty"><div class="gal-empty-icon">📷</div><p>Ainda sem fotos. Faça login como admin para adicionar.</p></div>`;
+    return;
+  }
+  g.innerHTML = D.gallery.map((it,i) =>
+    it.t === 'video'
+      ? `<div class="gal-it" onclick="openLB('video','${i}')"><video src="${it.s}" muted playsinline></video></div>`
+      : `<div class="gal-it" onclick="openLB('image','${i}')"><img src="${it.s}" alt="Projeto ${i+1}" loading="lazy"></div>`
+  ).join('');
+}
+
+// ── LANG ─────────────────────────────────────────────────────
+function setLang(l) {
+  lang = l;
+  document.documentElement.lang = l;
+  document.querySelectorAll('[data-pt],[data-en]').forEach(el => {
+    const t = el.getAttribute('data-'+l);
+    if (t) el.textContent = t;
+  });
+  document.querySelectorAll('[data-placeholder-pt],[data-placeholder-en]').forEach(el => {
+    const ph = el.getAttribute('data-placeholder-'+l);
+    if (ph) el.placeholder = ph;
+  });
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent.toLowerCase() === l));
+  persist();
+}
+
+// ── AUTH ─────────────────────────────────────────────────────
+function openLogin() {
+  if (loggedIn) { openAdmin(); return; }
+  document.getElementById('loginModal').classList.add('open');
+}
+function closeLogin() { document.getElementById('loginModal').classList.remove('open'); }
+function doLogin() {
+  if (document.getElementById('le').value === D.adminEmail && document.getElementById('lp').value === D.adminPass) {
+    loggedIn = true; closeLogin();
+    document.getElementById('admBtn').textContent = '⚙️ Admin';
+    openAdmin(); toast('✅ Bem-vindo, Mauro!', 'ok');
+  } else toast('❌ Credenciais inválidas', 'err');
+}
+
+function openAdmin() { loadAdminForms(); document.getElementById('adminPanel').classList.add('open'); }
+function closeAdmin() { document.getElementById('adminPanel').classList.remove('open'); }
+
+function switchTab(name, btn) {
+  document.querySelectorAll('.atab-c').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.atab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+}
+
+function loadAdminForms() {
+  document.getElementById('a_name').value = D.name;
+  document.getElementById('a_title').value = D.title;
+  document.getElementById('a_email').value = D.email;
+  document.getElementById('a_phone').value = D.phone;
+  document.getElementById('a_location').value = D.location;
+  document.getElementById('a_linkedin').value = D.linkedin;
+  document.getElementById('a_years').value = D.years;
+  document.getElementById('a_projects').value = D.projects;
+  document.getElementById('a_summary').value = D.summary;
+  loadSkAdmin();
+  loadExpAdmin();
+  loadGalAdmin();
+  if (D.photo) document.getElementById('pp-preview').innerHTML = `<img src="${D.photo}" style="width:100px;height:100px;border-radius:50%;object-fit:cover;border:3px solid var(--accent)">`;
+}
+
+// SKILLS ADMIN
+function loadSkAdmin() {
+  document.getElementById('sk-admin').innerHTML = D.skills.map((s,i) => `
+    <div style="display:flex;gap:.5rem;align-items:center;margin-bottom:.5rem">
+      <input class="fi2" style="flex:2" value="${s.n}" onchange="D.skills[${i}].n=this.value">
+      <input class="fi2" style="flex:0 0 70px" type="number" min="0" max="100" value="${s.v}" onchange="D.skills[${i}].v=parseInt(this.value)||0">
+      <button onclick="D.skills.splice(${i},1);loadSkAdmin()" style="background:#fee2e2;color:#dc2626;border:none;padding:7px 11px;border-radius:7px;cursor:pointer;font-weight:700">✕</button>
+    </div>`).join('');
+}
+function addSkill() { D.skills.push({n:'Nova Skill',v:80}); loadSkAdmin(); }
+
+// EXP ADMIN
+function loadExpAdmin() {
+  document.getElementById('exp-admin').innerHTML = D.experience.map((e,i) => `
+    <div style="background:var(--bg);border-radius:10px;padding:1rem;margin-bottom:.8rem;border:1px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;margin-bottom:.5rem">
+        <strong style="font-size:.86rem;color:var(--primary)">${e.title||'Nova entrada'}</strong>
+        <button onclick="D.experience.splice(${i},1);loadExpAdmin()" style="background:#fee2e2;color:#dc2626;border:none;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:.76rem;font-weight:700">✕ Remover</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.5rem">
+        <input class="fi2" placeholder="Período" value="${e.date}" onchange="D.experience[${i}].date=this.value">
+        <input class="fi2" placeholder="Título" value="${e.title}" onchange="D.experience[${i}].title=this.value">
+      </div>
+      <input class="fi2" style="margin-bottom:.5rem" placeholder="Empresa" value="${e.co}" onchange="D.experience[${i}].co=this.value">
+      <textarea class="ft2" style="min-height:70px" onchange="D.experience[${i}].desc=this.value">${e.desc}</textarea>
+      <input class="fi2" style="margin-top:.5rem" placeholder="Tags (vírgula)" value="${e.tags.join(', ')}" onchange="D.experience[${i}].tags=this.value.split(',').map(t=>t.trim()).filter(Boolean)">
+    </div>`).join('');
+}
+function addExp() { D.experience.unshift({date:'',title:'',co:'',desc:'',tags:[]}); loadExpAdmin(); }
+
+// PHOTO
+function handleProfilePhoto(inp) {
+  const f = inp.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = e => {
+    D.photo = e.target.result;
+    document.getElementById('pp-preview').innerHTML = `<img src="${D.photo}" style="width:100px;height:100px;border-radius:50%;object-fit:cover;border:3px solid var(--accent)">`;
+    const img = document.getElementById('photo-img');
+    img.src = D.photo; img.style.display='block';
+    document.getElementById('photo-initials').style.display='none';
+  };
+  r.readAsDataURL(f);
+}
+
+// GALLERY
+function handleGallery(inp) {
+  Array.from(inp.files).forEach(f => {
+    const r = new FileReader();
+    r.onload = e => {
+      D.gallery.push({s:e.target.result, t: f.type.startsWith('video')?'video':'image'});
+      renderGallery(); loadGalAdmin();
+    };
+    r.readAsDataURL(f);
+  });
+}
+function loadGalAdmin() {
+  const p = document.getElementById('gal-adm-prev');
+  p.innerHTML = D.gallery.map((it,i) => `
+    <div style="position:relative">
+      ${it.t==='video'
+        ? `<video src="${it.s}" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px"></video>`
+        : `<img src="${it.s}" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px">`}
+      <button onclick="D.gallery.splice(${i},1);renderGallery();loadGalAdmin()" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,.7);color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:.72rem;line-height:1;display:flex;align-items:center;justify-content:center">✕</button>
+    </div>`).join('');
+}
+
+// COLORS
+function applyTheme(el) {
+  document.querySelectorAll('.sw').forEach(s=>s.classList.remove('sel'));
+  el.classList.add('sel');
+  D.theme = {p:el.dataset.p, a:el.dataset.a, a2:el.dataset.a2, a3:el.dataset.a3};
+  applyThemeVars(D.theme);
+}
+function applyCustomColor() {
+  const hex = document.getElementById('chex').value || document.getElementById('cpicker').value;
+  if (!/^#[0-9A-Fa-f]{6}$/.test(hex)) { toast('Formato inválido. Use #RRGGBB','err'); return; }
+  D.theme.a = hex;
+  applyThemeVars(D.theme);
+}
+document.getElementById('cpicker').addEventListener('input', e => document.getElementById('chex').value = e.target.value);
+
+// SAVE
+function saveAll() {
+  D.name = document.getElementById('a_name').value;
+  D.title = document.getElementById('a_title').value;
+  D.email = document.getElementById('a_email').value;
+  D.phone = document.getElementById('a_phone').value;
+  D.location = document.getElementById('a_location').value;
+  D.linkedin = document.getElementById('a_linkedin').value;
+  D.years = document.getElementById('a_years').value;
+  D.projects = document.getElementById('a_projects').value;
+  D.summary = document.getElementById('a_summary').value;
+  persist();
+  render();
+  toast('✅ Alterações guardadas com sucesso!','ok');
+}
+
+// ── CV / COVER LETTER ─────────────────────────────────────────
+function hex2rgb(h){return[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)]}
+
+function genCV() {
+  const co = document.getElementById('cv-co').value;
+  const ref = document.getElementById('cv-ref').value;
+  const l = document.getElementById('cv-lang').value;
+  const {jsPDF} = window.jspdf;
+  const doc = new jsPDF({unit:'mm',format:'a4'});
+  const W=210,M=20,CW=170;
+  let y=20;
+  const [pr,pg,pb]=hex2rgb(D.theme.p);
+  const [ar,ag,ab]=hex2rgb(D.theme.a);
+
+  doc.setFillColor(pr,pg,pb); doc.rect(0,0,W,50,'F');
+  doc.setTextColor(255,255,255);
+  doc.setFont('helvetica','bold'); doc.setFontSize(22); doc.text(D.name,M,22);
+  doc.setFontSize(10); doc.setFont('helvetica','normal'); doc.text(D.title,M,31);
+  doc.setFontSize(9);
+  doc.text(`${D.email}  |  ${D.phone}  |  ${D.location}`,M,39);
+  doc.text(D.linkedin,M,46);
+  y=62;
+
+  const sec=(t)=>{
+    doc.setFillColor(ar,ag,ab); doc.rect(M,y,CW,7,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(9.5);
+    doc.setTextColor(255,255,255); doc.text(t.toUpperCase(),M+3,y+5.2);
+    y+=11; doc.setTextColor(55,55,55);
+  };
+
+  sec(l==='pt'?'Objetivo Profissional':'Professional Objective');
+  doc.setFont('helvetica','normal'); doc.setFontSize(9);
+  const sl=doc.splitTextToSize(D.summary,CW);
+  doc.text(sl,M,y); y+=sl.length*3.9+5;
+
+  sec(l==='pt'?'Experiência Profissional':'Professional Experience');
+  D.experience.forEach(e=>{
+    if(y>255){doc.addPage();y=20;}
+    doc.setFont('helvetica','bold'); doc.setFontSize(9.5); doc.setTextColor(pr,pg,pb);
+    doc.text(e.title,M,y); y+=4.5;
+    doc.setFont('helvetica','italic'); doc.setFontSize(8.5); doc.setTextColor(ar,ag,ab);
+    doc.text(`${e.co}  |  ${e.date}`,M,y); y+=4;
+    doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(55,55,55);
+    const dl=doc.splitTextToSize(e.desc,CW);
+    doc.text(dl,M,y); y+=dl.length*3.5+5;
+  });
+
+  sec(l==='pt'?'Educação':'Education');
+  [{d:'2003–2007',c:'Técnico em Electrónica e Telecomunicações',i:'ITEL — Luanda, Angola'},
+   {d:'2022–Atualmente',c:'Informática de Gestão Financeira',i:'ISAF — Luanda, Angola'}].forEach(e=>{
+    doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(pr,pg,pb);
+    doc.text(e.c,M,y); y+=4.5;
+    doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(55,55,55);
+    doc.text(`${e.i}  |  ${e.d}`,M,y); y+=6;
+  });
+
+  sec(l==='pt'?'Competências Técnicas':'Technical Skills');
+  const cols=[[],[]];
+  D.skills.forEach((s,i)=>cols[i%2].push(s));
+  const mr=Math.max(cols[0].length,cols[1].length);
+  for(let r=0;r<mr;r++){
+    [0,1].forEach(c=>{
+      if(!cols[c][r])return;
+      doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(55,55,55);
+      doc.text(`• ${cols[c][r].n} (${cols[c][r].v}%)`,M+c*(CW/2),y);
+    }); y+=4.2;
+  }
+  y+=4;
+
+  sec(l==='pt'?'Idiomas':'Languages');
+  doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(55,55,55);
+  doc.text(l==='pt'?'Português — Nativo  |  Inglês — B2 (Intermediário)':'Portuguese — Native  |  English — B2 (Intermediate)',M,y);
+
+  doc.setFontSize(7.5); doc.setTextColor(160,160,160);
+  doc.text(l==='pt'?`Gerado em ${new Date().toLocaleDateString('pt-PT')}`:`Generated ${new Date().toLocaleDateString('en-GB')}`,M,290);
+  if(ref) doc.text(`Ref: ${ref}`,W-M-30,290);
+  doc.save(`CV_Mauro_Sebastiao${co?'_'+co.replace(/\s/g,'_'):''}.pdf`);
+  toast('✅ CV gerado!','ok');
+}
+
+function genCover() {
+  const co = document.getElementById('cv-co').value||'Empresa';
+  const ref = document.getElementById('cv-ref').value||'N/A';
+  const l = document.getElementById('cv-lang').value;
+  const {jsPDF} = window.jspdf;
+  const doc = new jsPDF({unit:'mm',format:'a4'});
+  const W=210,M=25,CW=160;
+  const [pr,pg,pb]=hex2rgb(D.theme.p);
+  const [ar,ag,ab]=hex2rgb(D.theme.a);
+
+  doc.setFillColor(pr,pg,pb); doc.rect(0,0,W,32,'F');
+  doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(16);
+  doc.text(D.name,M,15);
+  doc.setFontSize(9); doc.setFont('helvetica','normal');
+  doc.text(`${D.email}  |  ${D.phone}  |  ${D.location}`,M,24);
+
+  let y=45;
+  doc.setTextColor(55,55,55); doc.setFont('helvetica','normal'); doc.setFontSize(9.5);
+  doc.text(l==='pt'?`Lisboa, ${new Date().toLocaleDateString('pt-PT')}`:`Lisbon, ${new Date().toLocaleDateString('en-GB')}`,M,y); y+=9;
+  doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(pr,pg,pb);
+  doc.text(l==='pt'?`Assunto: Candidatura${ref!='N/A'?' — Ref. '+ref:''}`:`Re: Application${ref!='N/A'?' — Ref. '+ref:''}`,M,y); y+=9;
+
+  const pts=l==='pt'?[
+    `Exmos. Srs. ${co},`,
+    `Venho por este meio manifestar o meu interesse em integrar a vossa equipa${ref!='N/A'?', relativamente à vaga com referência '+ref:''}. Com mais de 15 anos de experiência em Administração de Sistemas de TI, Segurança Eletrónica e Infraestrutura Crítica, acredito poder acrescentar valor significativo à vossa organização.`,
+    `Ao longo da minha carreira tive a oportunidade de gerir infraestruturas complexas, implementar políticas de cibersegurança que reduziram incidentes em 40%, construir Mini-Data Centers e implementar sistemas CCTV e controlo de acesso em ambientes com 500+ utilizadores. Sou certificado em CompTIA A+, Cisco CCNA e Microsoft 365 Administrator.`,
+    `Sou um profissional proativo, confiável e orientado à excelência operacional, com forte capacidade de liderança e formação de equipas, atualmente baseado em Lisboa, Portugal.`,
+    `Agradeço a atenção dispensada e fico ao vosso dispor para qualquer esclarecimento ou entrevista.\n\nCom os melhores cumprimentos,`,
+    D.name+'\n'+D.title
+  ]:[
+    `Dear ${co} Team,`,
+    `I am writing to express my interest in joining your organization${ref!='N/A'?', regarding the position referenced '+ref:''}. With over 15 years of experience in IT Systems Administration, Electronic Security, and Critical Infrastructure, I am confident I can bring significant value to your team.`,
+    `Throughout my career I have managed complex IT infrastructures, implemented cybersecurity policies that reduced incidents by 40%, built Mini-Data Centers, and deployed CCTV and access control systems in environments with 500+ users. I hold CompTIA A+, Cisco CCNA, and Microsoft 365 Administrator certifications.`,
+    `I am a proactive, reliable professional oriented toward operational excellence, with strong leadership and team training capabilities, currently based in Lisbon, Portugal.`,
+    `Thank you for your consideration. I look forward to the opportunity to discuss how my experience aligns with your needs.\n\nYours sincerely,`,
+    D.name+'\n'+D.title
+  ];
+
+  doc.setFont('helvetica','normal'); doc.setFontSize(9.5); doc.setTextColor(55,55,55);
+  pts.forEach(p=>{
+    const ls=doc.splitTextToSize(p,CW);
+    doc.text(ls,M,y); y+=ls.length*4.3+5;
+    if(y>275){doc.addPage();y=20;}
+  });
+  doc.setDrawColor(ar,ag,ab); doc.setLineWidth(.5); doc.line(M,y+2,M+55,y+2);
+
+  doc.save(`Carta_${co.replace(/\s/g,'_')}.pdf`);
+  toast('✅ Carta gerada!','ok');
+}
+
+// ── LIGHTBOX ─────────────────────────────────────────────────
+function openLB(type, i) {
+  const it = D.gallery[i];
+  document.getElementById('lb-c').innerHTML = type==='video'
+    ? `<video src="${it.s}" controls autoplay style="max-width:90vw;max-height:88vh;border-radius:8px"></video>`
+    : `<img src="${it.s}" style="max-width:90vw;max-height:88vh;border-radius:8px">`;
+  document.getElementById('lb').classList.add('open');
+}
+function closeLB(){document.getElementById('lb').classList.remove('open');document.getElementById('lb-c').innerHTML='';}
+
+// ── CONTACT ──────────────────────────────────────────────────
+function sendMsg(){
+  const n=document.getElementById('mn').value;
+  const e=document.getElementById('me').value;
+  const m=document.getElementById('mm').value;
+  if(!n||!e||!m){toast('Por favor preencha todos os campos','err');return;}
+  window.location.href=`mailto:${D.email}?subject=Contacto de ${encodeURIComponent(n)}&body=${encodeURIComponent(m+'\n\nDe: '+n+'\nEmail: '+e)}`;
+  toast('✅ A abrir email...','ok');
+}
+
+// ── TOAST ─────────────────────────────────────────────────────
+function toast(msg,type=''){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast show '+type;
+  setTimeout(()=>t.className='toast',3500);
+}
+
+// ── INIT ─────────────────────────────────────────────────────
+render();
+setLang(lang);
+
+// Animate skill bars
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.sk-fill').forEach(f=>{
+        const w=f.dataset.w; f.style.width='0';
+        setTimeout(()=>f.style.width=w,150);
+      });
+      io.unobserve(e.target);
+    }
+  });
+},{threshold:.1});
+const skGrid=document.getElementById('sk-grid');
+if(skGrid) io.observe(skGrid);
+
+// Close lightbox on backdrop click
+document.getElementById('lb').addEventListener('click',e=>{if(e.target===document.getElementById('lb'))closeLB();});
+// Close login on backdrop
+document.getElementById('loginModal').addEventListener('click',e=>{if(e.target===document.getElementById('loginModal'))closeLogin();});
+// Enter key on login
+document.getElementById('lp').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+</script>
+</body>
+</html>
